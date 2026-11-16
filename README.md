@@ -1,27 +1,44 @@
-# Ministry Role Profile Builder
+# Burnt Hickory Ministry Role Packet Builder (v2 preview)
 
-An interactive tool for building Burnt Hickory Baptist Church's Ministry Role Profiles (Team Member, Leader, and Coach levels) from a simple interview-style form. Answers generate a live, formatted preview and can be downloaded as a Word (.docx) document that matches the official Ministry Role Profile template — fonts, colors, and styling included.
+This is the refreshed version of the role builder. It is a local preview: nothing here touches the live site or the GitHub repo.
 
-## Using the tool
+## How to open it
 
-1. Open the live site (see the deployment URL in this repo's Vercel project, or ask whoever set it up to share it).
-2. Pick a level — **Team Member**, **Leader**, or **Coach** — using the tabs at the top.
-3. Fill in the position basics, responsibilities, qualifications, time commitment, and any role-specific notes. The preview on the right updates as you type.
-4. Click **Download This Role (.docx)** to save that single profile as a Word document, ready to send or print.
-5. To build a full packet for one ministry, click **Add to Ministry Packet** after finishing each role, then **Download Full Packet (.docx)** once all three levels are added — this produces one Word document with all the roles, each starting on a new page.
+Double-click `index.html`. It opens in your browser and works offline. No install needed.
 
-## How it works
+## What is in it
 
-This is a single self-contained HTML file (`index.html`) — no server, database, or build step required. All of the form logic, live preview, and Word-document generation run directly in the browser using the open-source `docx` library, which is bundled inline in the file. Nothing you type is sent anywhere; it only leaves your browser when you click a download button.
+- **Build a packet.** Pick a ministry area, a team, and a role. The four-part packet shows on the right. Download it as a Word file or print it to PDF.
+- **Edit content.** Every word is editable.
+  - Part 1 (Burnt Hickory, for everyone) is stored once. Change the mission or vision here and every future packet updates.
+  - Part 2 is stored once per ministry area, and Part 3 once per team.
+  - Part 4 is stored per role, including its qualifications, screening level, time commitment, and training. Each role can have different requirements.
+  - You can add areas, teams, and roles, duplicate a role, restore any item to its original wording, and download or load a backup file.
+- **Starting content** comes from the 28 finished packets (Hospitality, LifeGroups, Prayer Ministry, Women's Ministry).
 
-## Updating the tool
+## Demo mode
 
-To make changes (wording, template content, new fields, styling):
+Edits are saved in this browser only, and there is no sign-in yet. The next step is to move saving to Vercel storage with an admin password, so everyone sees the same content. The code for that is isolated in `js/store.js`.
 
-1. Edit `index.html` directly, or ask Claude to make the change and produce an updated copy.
-2. In this repo, use **Add file → Upload files** and upload the new `index.html` over the old one, then commit.
-3. If this repo is connected to Vercel, it will automatically redeploy to the same live URL within a minute or two — no further steps needed.
+## Folder map
 
-## Maintained by
+- `index.html`: the page
+- `css/app.css`: brand styles (teal, cream, Montserrat, Open Sans)
+- `css/fonts.css`: the fonts, embedded so the page works offline
+- `js/content.seed.js`: the starting packet content
+- `js/store.js`: saving and restoring content
+- `js/render.js`: the packet preview
+- `js/docx-export.js`: the Word export (fonts are embedded in the file)
+- `js/build.js`, `js/admin.js`, `js/main.js`: the two screens
+- `js/assets.js`: the logo
+- `vendor/docx.umd.js`: the library that writes Word files
 
-Burnt Hickory Baptist Church — Leadership Pipeline initiative.
+## Known gaps
+
+- The logo is a placeholder made from a small file in the design system (the badge is slightly clipped at its left edge). Swap in a high-resolution or SVG logo for a sharper result.
+- Word shows the brand fonts because they are embedded in the file. Word for the web and Google Docs ignore embedded fonts and will substitute.
+
+## New in this version
+
+- **Collapsible menu.** In Build a packet, only ministry areas show at first. Open an area to see its teams, then a team to see its roles. The search box opens matches automatically.
+- **Upload a document.** The "Upload a document" button reads a Word (.docx) or PDF file in the browser, finds the area, team, and role, and asks you to confirm before adding it. Full four-part packets and single role descriptions both work. PDFs lose some table formatting, so check each section afterward.
