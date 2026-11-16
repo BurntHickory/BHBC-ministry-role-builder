@@ -413,7 +413,8 @@
     } else if (sel.kind === 'tools') {
       ed.appendChild(head('Tools', 'Backup, restore, reset'));
       const hist = BH.store.adapter.history();
-      ed.appendChild(h('div', { class: 'note', text: BH.store.adapter.label + '. When we connect shared storage, edits will be saved for everyone who uses the builder.' }));
+      if (BH.store.shared()) BH.store.refreshHistory().then((changed) => { if (changed && sel.kind === 'tools') BH.admin.render(); });
+      ed.appendChild(h('div', { class: 'note', text: BH.store.adapter.label + '.' }));
       ed.appendChild(h('h3', { style: 'font-size:16px;margin:0 0 8px', text: 'Backup file' }));
       ed.appendChild(h('div', { class: 'actions', style: 'margin-bottom:24px' }, [
         h('button', { class: 'btn secondary', text: 'Download backup', onclick: () => {

@@ -31,9 +31,9 @@
       });
       $('role-search').addEventListener('input', (e) => { query = e.target.value.trim().toLowerCase(); this.renderPick(); });
       ['in-vol', 'in-leader', 'in-start'].forEach((id) => $(id).addEventListener('input', () => this.preview()));
-      $('add-area').addEventListener('click', () => BH.admin.addArea());
-      $('add-team').addEventListener('click', () => BH.admin.addTeam(st.area));
-      $('btn-import').addEventListener('click', () => BH.importer.open());
+      $('add-area').addEventListener('click', async () => { if (await BH.store.ensureUnlocked()) BH.admin.addArea(); });
+      $('add-team').addEventListener('click', async () => { if (await BH.store.ensureUnlocked()) BH.admin.addTeam(st.area); });
+      $('btn-import').addEventListener('click', async () => { if (await BH.store.ensureUnlocked()) BH.importer.open(); });
       $('btn-docx').addEventListener('click', () => this.download());
       $('btn-print').addEventListener('click', () => window.print());
       $('jump').addEventListener('click', (e) => {

@@ -15,8 +15,12 @@
   };
 
   document.getElementById('logo').src = window.BH_ASSETS.logo;
-  BH.store.load();
-  BH.build.init();
-  document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', () => BH.main.show(b.dataset.view)));
-  if (location.hash === '#edit') BH.main.show('edit');
+  document.querySelectorAll('.tab').forEach((b) => b.addEventListener('click', async () => {
+    if (b.dataset.view === 'edit' && !(await BH.store.ensureUnlocked())) return;
+    BH.main.show(b.dataset.view);
+  }));
+  BH.store.init().then(async () => {
+    BH.build.init();
+    if (location.hash === '#edit' && (await BH.store.ensureUnlocked())) BH.main.show('edit');
+  });
 })();
