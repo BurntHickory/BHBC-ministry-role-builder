@@ -42,3 +42,16 @@ Edits are saved in this browser only, and there is no sign-in yet. The next step
 
 - **Collapsible menu.** In Build a packet, only ministry areas show at first. Open an area to see its teams, then a team to see its roles. The search box opens matches automatically.
 - **Upload a document.** The "Upload a document" button reads a Word (.docx) or PDF file in the browser, finds the area, team, and role, and asks you to confirm before adding it. Full four-part packets and single role descriptions both work. PDFs lose some table formatting, so check each section afterward.
+
+## Shared saving (Vercel Blob)
+
+When this site runs on Vercel it saves content to a private Vercel Blob store so everyone sees the same edits. Opened from a file or without the server, it falls back to saving in the browser only.
+
+Setup on Vercel (one time):
+1. Create a **private** Blob store and connect it to this project. Vercel adds `BLOB_STORE_ID` automatically.
+2. Add an environment variable named `EDIT_PASSCODE` for all environments.
+3. Redeploy.
+
+How it works: anyone can view and build packets. Editing content, adding areas, teams, or roles, and uploading documents ask for the passcode once per browser tab. If two people save at nearly the same time, the second save is stopped and offered a reload so nothing is overwritten. The server keeps the last 8 earlier versions, shown under Edit content, Tools.
+
+Server files are in `api/`. The app files are plain HTML, CSS, and JavaScript with no build step.
